@@ -646,5 +646,5 @@ async def server(ctx):
 
 
 # Сonntent
-token = os.environ.get("Njk0NjY3NjU2MjU4NjUwMjYy.XpdPKQ.jRrgTmCB5Kgdrark5pZxSKp2lnU")
+token = os.environ.get("DISCORD_TOKEN")
 bot.run(str(token))
