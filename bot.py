@@ -6,7 +6,6 @@ import random
 import io
 import os
 from discord.ext import commands
-from PIL import Image, ImageDraw, ImageFont, ImageOps
 from discord.utils import get
 
 bot = commands.Bot(command_prefix='.')
@@ -62,43 +61,6 @@ async def members(ctx, role: discord.Role):
     data = "\n".join([i.mention for i in role.members])
     
     await ctx.send(embed = discord.Embed(description = f'{data}', color=0x0c0c0c))
-
-@bot.command(aliases = ['level', 'profile', 'я', 'lvl', 'уровень', 'ранг', 'rank', 'card'])
-async def __lvl_card(ctx):
-	async with ctx.typing():
-
-		url = str(ctx.author.avatar_url)[:-10]
-
-		r = requests.get(url, stream = True)
-		r = Image.open(io.BytesIO(r.content))
-		r = r.convert('RGBA')
-		r = r.resize((227, 227), Image.ANTIALIAS)
-
-		image = Image.new("RGBA", (917, 374), (0, 0, 0, 0))
-		image.paste(r, (29, 22, 256, 249))
-
-		banner = Image.open('main_banner.png') #место куда мы сохранили баннер
-		banner = banner.convert('RGBA')
-
-		image.paste(banner, (0, 0, 917, 374), banner)
-
-		idraw = ImageDraw.Draw(image)
-		name = ctx.author.name
-		tag = ctx.author.discriminator
- 		
-		font_50 = ImageFont.truetype("bahnschrift.ttf", size = 50)
-		font_25 = ImageFont.truetype("bahnschrift.ttf", size = 25)
-
-		idraw.text((294, 72), f'{name}#{tag}', font = font_50)
-		idraw.text((294, 137), f'надпись "О себе"', font = font_25)
-		idraw.text((120, 263), f'левел', font = font_25)
-		idraw.text((104, 293), f'сколько хр осталось до следующего лвл', font = font_25)
-		idraw.text((183, 322), f'баланс (в $)', font = font_25)
-		idraw.text((639, 263), f'сколько годиков?', font = font_25)
-
-		image.save('banners') #место, куда сохраняем картинку
-
-		await ctx.send(file = discord.File(fp = 'main_banner.png')) #прикрепляем картинку
 
 @bot.command()
 @commands.check(is_owner)
